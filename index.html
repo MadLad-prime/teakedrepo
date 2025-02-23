@@ -95,10 +95,19 @@
             <a href="https://facebook.com" target="_blank">Facebook</a> |
             <a href="https://twitter.com" target="_blank">Twitter</a> |
             <a href="https://instagram.com" target="_blank">Instagram</a>
-    
+        <button id="admin-button" style="position: absolute; bottom: 10px; left: 10px;">Admin</button>
     </footer>
-
+        
     <script src="scripts_v4.js"></script>
-
+<script>
+    document.getElementById('admin-button').addEventListener('click', function() {
+        var password = prompt("Enter admin password:");
+        if (password === "your_password") {
+            window.location.href = "admin.html";
+        } else {
+            alert("Incorrect password!");
+        }
+    });
+</script>
 </body>
 </html>
