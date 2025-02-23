@@ -45,3 +45,12 @@ document.addEventListener("DOMContentLoaded", function () {
     checkVisibility();
     window.addEventListener("scroll", checkVisibility);
 });
+
+document.getElementById('admin-button').addEventListener('click', function() {
+    var password = prompt("Enter admin password:");
+    if (password === "your_password") {
+        window.location.href = "admin.html";
+    } else {
+        alert("Incorrect password!");
+    }
+});
