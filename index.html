@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=1200">
     <title>Good Isaac Home Concepts</title>
     <link rel="stylesheet" href="styles_v6.css">
 </head>
@@ -10,14 +11,14 @@
     <!-- Header Section -->
     <header>
         <h1>Good Isaac Home Concepts</h1>
-        <img src="images/36357c4d-2516-4d7f-9a69-e1b7f6de915a.jpeg" alt="Business Image">
+        <img src="images/isaac_img1.jpg" alt="profile">
         <div class="header-content">
             <h2>Good Isaac Home Concepts</h2>
             <p>Welcome to Good Isaac Home Concepts, we specialize in all types of exterior and interior finishes, design and installation of contemporary kitchen cabinets ,wardrobes,office furniture, retail furniture ,floor tiles ,plastering,painting ,gysum and all types of aluminium fabrication etc.</p>
         </div>
         <button id="menu-button">☰ Menu</button>
         <div class="dropdown" id="dropdown-menu">
-            <a href="C:\Users\dudet\python_files\web_dev_v2\portfolio.html">Portfolio</a> <!-- \Link to your portfolio page -->
+            <a href="portfolio.html">Portfolio</a> <!-- \Link to your portfolio page -->
             <a href="tel:+254 710593221">Call Us</a> <!-- Link to dial pad -->
         </div>
     </header>
@@ -28,16 +29,16 @@
     <h2>Our Services</h2>
     <ul>
         <li>
-            <img src="images/service1.jpg" alt="Service 1">
-            <p>Interior Design - Customized interior design solutions.</p>
+            <img src="images/isaac_img11.jpg" alt="Image 11">
+            <p>Custom Bookshelf and Study table.</p>
         </li>
         <li>
-            <img src="images/DIY_Rustic_Wood_Floating_Desk.jpeg" alt="Rustic Wood Desk">
-            <p>Custom Furniture - Stylish workspace solutions.</p>
+            <img src="images/isaac_img6.jpg" alt="Image 6">
+            <p>Renovation-Design and Insallation of Wardrobes.</p>
         </li>
         <li>
-            <img src="images/service3.jpg" alt="Service 3">
-            <p>Renovations - Transform your space with expert renovations.</p>
+            <img src="images/isaac_img14.jpg" alt="Image 14">
+            <p>Design of Contemporary Shoe Rack.</p>
         </li>
     </ul>
 </section>
@@ -47,30 +48,35 @@
     <h2>Latest Projects</h2>
     <div class="project-grid">
         <div>
-            <img src="images/aee4be44-95c9-4b1d-af4c-066f014aa745.jpeg" alt="Project 1">
-            <p>Modern Living Room Redesign</p>
+            <img src="images/isaac_img16.jpg" alt="Image 16">
+            <p>Iron Board Station</p>
         </div>
         <div>
-            <img src="images/e57ef810-ddf8-49d4-82ac-c585d28cda3f.jpeg" alt="Project 2">
-            <p>Custom Rustic Workspace</p>
+             <img src="images/isaac_img17.jpg" alt="Image 17">
+            <p>Cabinet</p>
         </div>
         <div>
-            <img src="images/project3.jpg" alt="Project 3">
-            <p>Elegant Bedroom Setup</p>
+            <img src="images/isaac_img18.jpg" alt="Image 18">
+            <p>Cupboard</p>
         </div>
     </div>
 </section>
 
-    <!-- Video Section -->
+   <!-- Video Section -->
 <section id="video">
     <h2>Watch Our Work</h2>
-    <div class="video-thumbnail">
-       <a href="https://youtu.be/wfvZBh2pxS4?si=r9GQJfoevCE8fRqb" target="_blank">
-                <img src="https://img.youtube.com/vi/wfvZBh2pxS4/maxresdefault.jpg" alt="Watch Our Work">
-                <div class="play-button">&#9658;</div>
-            </a>
-        </div>
+    <div class="video-thumbnail" onclick="playVideo(this)">
+        <img src="https://img.youtube.com/vi/AU4mQDrCpIs/maxresdefault.jpg" alt="Watch Our Work">
+        <div class="play-button">&#9658;</div>
+    </div>
 </section>
+
+<script>
+    function playVideo(container) {
+        container.innerHTML = 
+            '<iframe width="100%" height="315" src="https://www.youtube.com/embed/AU4mQDrCpIs?autoplay=1" frameborder="0" allowfullscreen></iframe>';
+    }
+</script>
 
     <!-- About Section -->
     <section id="about">
@@ -92,7 +98,7 @@
     
     </footer>
 
-    <script src="C:\Users\dudet\python_files\web_dev_v2\scripts_v4.js"></script>
+    <script src="scripts_v4.js"></script>
 
 </body>
 </html>
