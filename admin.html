@@ -96,14 +96,27 @@
         }
 
         function uploadImage() {
-            const file = document.getElementById('file-input').files[0];
-            const category = document.getElementById('image-category').value;
-            const slot = parseInt(document.getElementById('image-slot').value);
-            
-            if (!file) {
-                alert("No file selected.");
-                return;
-            }
+    const file = document.getElementById('file-input').files[0];
+    const category = document.getElementById('image-category').value;
+    const slot = parseInt(document.getElementById('image-slot').value);
+    
+    if (!file) {
+        alert("No file selected.");
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const imageData = e.target.result;
+        
+        // Save to localStorage
+        const key = `update_${category}_${slot}`;
+        localStorage.setItem(key, imageData);
+        alert("Image updated! Refresh the main page to see changes.");
+    };
+    reader.readAsDataURL(file);
+}
+
             
             const mainPage = window.opener || window.parent;
             if (!mainPage) {
