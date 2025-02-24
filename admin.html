@@ -50,7 +50,7 @@
         function checkPassword() {
             const password = prompt("Enter Admin Password:");
             const correctPassword = "admin123"; // Change this to a secure method in production
-            if (password !== correctPassword) {
+            if (password !== correctPassword || password === null) {
                 alert("Incorrect password! Access denied.");
                 window.location.href = "index.html"; // Redirect to main page if incorrect
             }
