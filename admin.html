@@ -106,18 +106,25 @@
             }
             
             const mainPage = window.opener || window.parent;
-            const section = document.getElementById('image-category').value;
-            const images = mainPage.document.querySelectorAll(`#${section} img`);
+            if (!mainPage) {
+                alert("Main page not found. Make sure the admin page is opened from the main page.");
+                return;
+            }
+            
+            const images = mainPage.document.querySelectorAll(`#${category} img`);
+            console.log("Found images:", images);
+            console.log("Selected slot:", slot);
             
             if (images.length > slot) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     images[slot].src = e.target.result;
+                    console.log("Image updated successfully!");
                 };
                 reader.readAsDataURL(file);
                 alert("Image updated successfully!");
             } else {
-                alert("Selected slot is out of range.");
+                alert("Selected slot is out of range. Available slots: " + images.length);
             }
         }
     </script>
