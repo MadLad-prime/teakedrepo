@@ -14,84 +14,64 @@ body {
 
 /* Header Section */
 header {
-    position: relative;
     padding: 20px;
     background-color: #2c3e50; /* Dark blue */
     color: #ecf0f1; /* Light pale blue */
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-}
-
-header h1 {
-    font-size: 2.5em;
-    margin-bottom: 10px;
-    width: 100%;
     text-align: center;
 }
 
+header h1 {
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+
 header img {
-    width: 40%;
+    width: 100%;
+    max-width: 300px;
     height: auto;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    margin-right: 20px;
+    margin-bottom: 20px;
 }
 
 header .header-content {
-    flex: 1;
-    max-width: 50%;
-    padding: 20px;
-    color: #ecf0f1;
+    max-width: 100%;
+    padding: 0 20px;
 }
 
 header button {
-    position: absolute;
-    top: 20px;
-    right: 20px;
+    display: block;
     background: none;
     border: none;
     color: #ecf0f1;
     font-size: 2em;
     cursor: pointer;
-}
-
-header h2 {
-    text-decoration: underline;
     margin-top: 10px;
-    color: #ecf0f1;
 }
 
 /* Dropdown Menu */
 .dropdown {
-    position: absolute;
-    top: 60px;
-    right: 20px;
+    display: none;
+    width: 100%;
     background-color: #34495e; /* Dark blue */
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    display: none;
     padding: 10px;
-    opacity: 0;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    transform: translateY(-10px);
+    margin-top: 10px;
 }
 
 .dropdown.visible {
     display: block;
-    opacity: 1;
-    transform: translateY(0);
 }
 
 .dropdown a {
     display: block;
-    padding: 15px 30px;
-    color: #ecf0f1; /* Light pale blue */
+    padding: 10px;
+    color: #ecf0f1;
     text-decoration: none;
     font-size: 1.2em;
     text-align: center;
-    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .dropdown a:hover {
@@ -101,48 +81,39 @@ header h2 {
 }
 
 /* Services Section */
-/* Services Section */
 #services {
-    padding: 60px 20px;
+    padding: 40px 20px;
     background-color: #ffffff;
     text-align: center;
 }
 
 #services h2 {
-    font-size: 2.5em;
-    margin-bottom: 40px;
+    font-size: 2em;
+    margin-bottom: 20px;
     color: #2c3e50;
-    text-transform: uppercase;
-    letter-spacing: 2px;
 }
 
 #services ul {
     list-style: none;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
     gap: 20px;
-    padding: 0 20px;
+    justify-content: center;
 }
 
 #services li {
     background-color: #f4f1f4ea; /* Pale tan */
     padding: 20px;
     border-radius: 10px;
-    width: calc(33.33% - 20px); /* 3 items per row with gaps */
+    width: 100%;
+    max-width: 300px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-#services li:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 #services img {
     width: 100%;
-    height: 200px;
+    height: 150px;
     object-fit: cover;
     border-radius: 10px;
     margin-bottom: 15px;
@@ -156,7 +127,7 @@ header h2 {
 /* Projects Section */
 #projects {
     padding: 40px 20px;
-    background-color: #f4f1ea;
+    background-color: #f4f1ea; /* Pale tan */
     text-align: center;
 }
 
@@ -169,28 +140,23 @@ header h2 {
 #projects .project-grid {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
     gap: 20px;
-    padding: 0 20px;
+    justify-content: center;
 }
 
 #projects .project-grid div {
     background-color: #ffffff;
     padding: 20px;
     border-radius: 10px;
-    width: calc(33.33% - 20px); /* 3 items per row with gaps */
+    width: 100%;
+    max-width: 300px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
-    transition: transform 0.3s ease;
-}
-
-#projects .project-grid div:hover {
-    transform: translateY(-10px);
 }
 
 #projects img {
     width: 100%;
-    height: 200px;
+    height: 150px;
     object-fit: cover;
     border-radius: 10px;
     margin-bottom: 15px;
@@ -217,11 +183,12 @@ header h2 {
 .video-thumbnail {
     position: relative;
     display: inline-block;
+    width: 100%;
+    max-width: 560px;
 }
 
 .video-thumbnail img {
     width: 100%;
-    max-width: 560px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
@@ -234,12 +201,13 @@ header h2 {
     font-size: 4em;
     color: #ff0000; /* YouTube red */
     opacity: 0.8;
-    transition: opacity 0.3s ease;
 }
 
 .video-thumbnail:hover .play-button {
     opacity: 1;
 }
+
+/* Admin Button */
 #admin-button {
     background-color: #3498db; /* Blue background */
     color: #fff; /* White text */
@@ -248,29 +216,11 @@ header h2 {
     border-radius: 5px;
     cursor: pointer;
     font-size: 1em;
-    display: inline-block; /* Ensure it is displayed */
+    display: inline-block;
 }
 
 #admin-button:hover {
     background-color: #2980b9; /* Darker blue on hover */
-}
-
-/* About Section */
-#about {
-    padding: 40px 20px;
-    background-color: #f4f1ea; /* Pale tan */
-    text-align: center;
-}
-
-#about h2 {
-    font-size: 2em;
-    margin-bottom: 20px;
-    color: #2c3e50; /* Dark blue */
-}
-
-#about p {
-    font-size: 1.1em;
-    color: #333;
 }
 
 /* Footer Section */
@@ -301,20 +251,13 @@ footer a:hover {
     text-decoration: underline;
 }
 
-/* Social Media Icons */
-footer p a img {
-    width: 24px;
-    height: 24px;
-    vertical-align: middle;
-}
-
 /* Animations */
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
 }
 
-header, #services, #projects, #video, #about, footer {
+header, #services, #projects, #video, footer {
     animation: fadeIn 1s ease-in-out;
 }
 
@@ -328,4 +271,40 @@ section {
 section.visible {
     opacity: 1;
     transform: translateY(0);
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    header img {
+        width: 80%;
+        margin: 0 auto 20px;
+    }
+
+    header .header-content {
+        max-width: 100%;
+    }
+
+    #services li, #projects .project-grid div {
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 1.5em;
+    }
+
+    header button {
+        font-size: 1.5em;
+    }
+
+    #services h2, #projects h2, #video h2 {
+        font-size: 1.8em;
+    }
 }
