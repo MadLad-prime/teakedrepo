@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function () {
         adminButton.addEventListener("click", function (event) {
             event.preventDefault(); // Prevent default link behavior
             const password = prompt("Enter admin password:");
-            if (password === "your_password") { // Replace with your actual password
+            if (password === "092") { // Replace with your actual password
                 window.location.href = "admin.html";
             } else {
                 alert("Incorrect password!");
