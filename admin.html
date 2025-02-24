@@ -12,12 +12,14 @@
             align-items: center;
             height: 100vh;
             background-color: #f0f0f0;
+            flex-direction: column;
         }
         .upload-container {
             background: #fff;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
         }
         .upload-container h2 {
             margin-bottom: 20px;
@@ -25,23 +27,63 @@
         .upload-container input[type="file"] {
             margin-bottom: 10px;
         }
+        .preview-container {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 20px;
+            gap: 10px;
+        }
+        .preview-container img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
     </style>
 </head>
 <body>
     <div class="upload-container">
         <h2>Upload Images</h2>
-        <input type="file" id="file-input">
-        <button onclick="uploadImage()">Upload</button>
+        <label for="image-category">Select Category:</label>
+        <select id="image-category">
+            <option value="services">Services</option>
+            <option value="projects">Projects</option>
+            <option value="about">About</option>
+        </select>
+        <input type="file" id="file-input" multiple accept="image/*">
+        <button onclick="uploadImages()">Upload</button>
+        <div class="preview-container" id="preview"></div>
     </div>
+    
     <script>
-        function uploadImage() {
-            var fileInput = document.getElementById('file-input');
-            var file = fileInput.files[0];
-            if (file) {
-                alert("Image uploaded: " + file.name);
-            } else {
-                alert("No file selected.");
+        document.getElementById('file-input').addEventListener('change', function(event) {
+            const previewContainer = document.getElementById('preview');
+            previewContainer.innerHTML = '';
+            const files = event.target.files;
+            
+            for (let file of files) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    previewContainer.appendChild(img);
+                };
+                reader.readAsDataURL(file);
             }
+        });
+
+        function uploadImages() {
+            const files = document.getElementById('file-input').files;
+            const category = document.getElementById('image-category').value;
+            
+            if (files.length === 0) {
+                alert("No file selected.");
+                return;
+            }
+            
+            alert("Uploading " + files.length + " images to " + category);
+            // Future: Implement actual upload logic to update the main page dynamically
         }
     </script>
 </body>
