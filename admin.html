@@ -46,13 +46,19 @@
     <div class="upload-container">
         <h2>Upload Images</h2>
         <label for="image-category">Select Category:</label>
-        <select id="image-category">
+        <select id="image-category" onchange="updateSlotOptions()">
             <option value="services">Services</option>
             <option value="projects">Projects</option>
             <option value="about">About</option>
         </select>
-        <input type="file" id="file-input" multiple accept="image/*">
-        <button onclick="uploadImages()">Upload</button>
+        <label for="image-slot">Select Image Slot:</label>
+        <select id="image-slot">
+            <option value="0">Image 1</option>
+            <option value="1">Image 2</option>
+            <option value="2">Image 3</option>
+        </select>
+        <input type="file" id="file-input" accept="image/*">
+        <button onclick="uploadImage()">Upload</button>
         <div class="preview-container" id="preview"></div>
     </div>
     
@@ -60,9 +66,9 @@
         document.getElementById('file-input').addEventListener('change', function(event) {
             const previewContainer = document.getElementById('preview');
             previewContainer.innerHTML = '';
-            const files = event.target.files;
+            const file = event.target.files[0];
             
-            for (let file of files) {
+            if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const img = document.createElement('img');
@@ -73,17 +79,42 @@
             }
         });
 
-        function uploadImages() {
-            const files = document.getElementById('file-input').files;
+        function updateSlotOptions() {
             const category = document.getElementById('image-category').value;
+            const slotSelect = document.getElementById('image-slot');
+            if (category === 'about') {
+                slotSelect.innerHTML = '<option value="0">Main Image</option>';
+            } else {
+                slotSelect.innerHTML = '<option value="0">Image 1</option>' +
+                                       '<option value="1">Image 2</option>' +
+                                       '<option value="2">Image 3</option>';
+            }
+        }
+
+        function uploadImage() {
+            const file = document.getElementById('file-input').files[0];
+            const category = document.getElementById('image-category').value;
+            const slot = parseInt(document.getElementById('image-slot').value);
             
-            if (files.length === 0) {
+            if (!file) {
                 alert("No file selected.");
                 return;
             }
             
-            alert("Uploading " + files.length + " images to " + category);
-            // Future: Implement actual upload logic to update the main page dynamically
+            const mainPage = window.opener || window.parent;
+            const section = document.getElementById('image-category').value;
+            const images = mainPage.document.querySelectorAll(`#${section} img`);
+            
+            if (images.length > slot) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    images[slot].src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+                alert("Image updated successfully!");
+            } else {
+                alert("Selected slot is out of range.");
+            }
         }
     </script>
 </body>
