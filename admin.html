@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio</title>
+    <title>Admin Upload</title>
     <link rel="stylesheet" href="styles_v6.css">
     <style>
         body {
@@ -13,29 +13,13 @@
             background-color: #f0f0f0;
             padding: 20px;
         }
-        .section {
+        .upload-container {
             width: 80%;
             background: #fff;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-        }
-        .section h2 {
             text-align: center;
-        }
-        .preview-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-        }
-        .preview-container img {
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
-            border-radius: 5px;
-            border: 1px solid #ccc;
         }
     </style>
 </head>
@@ -52,17 +36,7 @@
         checkPassword();
     </script>
     
-    <div class="section">
-        <h2>Services</h2>
-        <div class="preview-container" id="services"></div>
-    </div>
-    
-    <div class="section">
-        <h2>Projects</h2>
-        <div class="preview-container" id="projects"></div>
-    </div>
-    
-    <div class="section upload-container">
+    <div class="upload-container">
         <h2>Upload Images</h2>
         <label for="image-category">Select Category:</label>
         <select id="image-category" onchange="updateSlotOptions()">
@@ -77,7 +51,6 @@
     
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            loadImages();
             updateSlotOptions();
         });
 
@@ -108,24 +81,8 @@
                 const key = `update_${category}_${slot}`;
                 localStorage.setItem(key, imageData);
                 alert("Image updated! Refresh the page to see changes.");
-                loadImages();
             };
             reader.readAsDataURL(file);
-        }
-        
-        function loadImages() {
-            ['services', 'projects'].forEach(category => {
-                const container = document.getElementById(category);
-                container.innerHTML = '';
-                const slots = category === 'services' ? 3 : 9;
-                for (let i = 0; i < slots; i++) {
-                    const key = `update_${category}_${i}`;
-                    const imageData = localStorage.getItem(key);
-                    const img = document.createElement('img');
-                    img.src = imageData ? imageData : 'placeholder.jpg';
-                    container.appendChild(img);
-                }
-            });
         }
     </script>
 </body>
