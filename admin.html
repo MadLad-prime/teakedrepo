@@ -67,11 +67,7 @@
             <option value="about">About</option>
         </select>
         <label for="image-slot">Select Image Slot:</label>
-        <select id="image-slot">
-            <option value="0">Image 1</option>
-            <option value="1">Image 2</option>
-            <option value="2">Image 3</option>
-        </select>
+        <select id="image-slot"></select>
         <input type="file" id="file-input" accept="image/*">
         <button onclick="uploadImage()">Upload</button>
         <div class="preview-container" id="preview"></div>
@@ -94,17 +90,24 @@
                     reader.readAsDataURL(file);
                 }
             });
+            updateSlotOptions();
         });
 
         function updateSlotOptions() {
             const category = document.getElementById('image-category').value;
             const slotSelect = document.getElementById('image-slot');
+            slotSelect.innerHTML = '';
+            
             if (category === 'about') {
                 slotSelect.innerHTML = '<option value="0">Main Image</option>';
-            } else {
-                slotSelect.innerHTML = '<option value="0">Image 1</option>' +
-                                       '<option value="1">Image 2</option>' +
-                                       '<option value="2">Image 3</option>';
+            } else if (category === 'services') {
+                for (let i = 0; i < 3; i++) {
+                    slotSelect.innerHTML += `<option value="${i}">Image ${i + 1}</option>`;
+                }
+            } else if (category === 'projects') {
+                for (let i = 0; i < 9; i++) {
+                    slotSelect.innerHTML += `<option value="${i}">Image ${i + 1}</option>`;
+                }
             }
         }
 
