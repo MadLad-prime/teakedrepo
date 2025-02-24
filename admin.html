@@ -21,7 +21,10 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
-        .upload-container h1, .upload-container h2 {
+        .upload-container h1 {
+            margin-bottom: 20px;
+        }
+        .upload-container h2 {
             margin-bottom: 20px;
         }
         .upload-container input[type="file"] {
@@ -83,11 +86,13 @@
         function updateSlotOptions() {
             const category = document.getElementById('image-category').value;
             const slotSelect = document.getElementById('image-slot');
-            slotSelect.innerHTML = category === 'about' 
-                ? '<option value="0">Main Image</option>' 
-                : '<option value="0">Image 1</option>' +
-                  '<option value="1">Image 2</option>' +
-                  '<option value="2">Image 3</option>';
+            if (category === 'about') {
+                slotSelect.innerHTML = '<option value="0">Main Image</option>';
+            } else {
+                slotSelect.innerHTML = '<option value="0">Image 1</option>' +
+                                       '<option value="1">Image 2</option>' +
+                                       '<option value="2">Image 3</option>';
+            }
         }
 
         function uploadImage() {
@@ -103,8 +108,28 @@
             const reader = new FileReader();
             reader.onload = function(e) {
                 const imageData = e.target.result;
-                localStorage.setItem(`update_${category}_${slot}`, imageData);
+                
+                // Save to localStorage
+                const key = `update_${category}_${slot}`;
+                localStorage.setItem(key, imageData);
                 alert("Image updated! Refresh the main page to see changes.");
+
+                const mainPage = window.opener || window.parent;
+                if (!mainPage) {
+                    console.warn("Main page not found. Make sure the admin page is opened from the main page.");
+                    return;
+                }
+                
+                const images = mainPage.document.querySelectorAll(`#${category} img`);
+                console.log("Found images:", images);
+                console.log("Selected slot:", slot);
+                
+                if (images.length > slot) {
+                    images[slot].src = imageData;
+                    console.log("Image updated successfully!");
+                } else {
+                    alert("Selected slot is out of range. Available slots: " + images.length);
+                }
             };
             reader.readAsDataURL(file);
         }
