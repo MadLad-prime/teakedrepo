@@ -21,10 +21,7 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
-        .upload-container h1 {
-            margin-bottom: 20px;
-        }
-        .upload-container h2 {
+        .upload-container h1, .upload-container h2 {
             margin-bottom: 20px;
         }
         .upload-container input[type="file"] {
@@ -86,59 +83,30 @@
         function updateSlotOptions() {
             const category = document.getElementById('image-category').value;
             const slotSelect = document.getElementById('image-slot');
-            if (category === 'about') {
-                slotSelect.innerHTML = '<option value="0">Main Image</option>';
-            } else {
-                slotSelect.innerHTML = '<option value="0">Image 1</option>' +
-                                       '<option value="1">Image 2</option>' +
-                                       '<option value="2">Image 3</option>';
-            }
+            slotSelect.innerHTML = category === 'about' 
+                ? '<option value="0">Main Image</option>' 
+                : '<option value="0">Image 1</option>' +
+                  '<option value="1">Image 2</option>' +
+                  '<option value="2">Image 3</option>';
         }
 
         function uploadImage() {
-    const file = document.getElementById('file-input').files[0];
-    const category = document.getElementById('image-category').value;
-    const slot = parseInt(document.getElementById('image-slot').value);
-    
-    if (!file) {
-        alert("No file selected.");
-        return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        const imageData = e.target.result;
-        
-        // Save to localStorage
-        const key = `update_${category}_${slot}`;
-        localStorage.setItem(key, imageData);
-        alert("Image updated! Refresh the main page to see changes.");
-    };
-    reader.readAsDataURL(file);
-}
-
+            const file = document.getElementById('file-input').files[0];
+            const category = document.getElementById('image-category').value;
+            const slot = parseInt(document.getElementById('image-slot').value);
             
-            const mainPage = window.opener || window.parent;
-            if (!mainPage) {
-                alert("Main page not found. Make sure the admin page is opened from the main page.");
+            if (!file) {
+                alert("No file selected.");
                 return;
             }
-            
-            const images = mainPage.document.querySelectorAll(`#${category} img`);
-            console.log("Found images:", images);
-            console.log("Selected slot:", slot);
-            
-            if (images.length > slot) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    images[slot].src = e.target.result;
-                    console.log("Image updated successfully!");
-                };
-                reader.readAsDataURL(file);
-                alert("Image updated successfully!");
-            } else {
-                alert("Selected slot is out of range. Available slots: " + images.length);
-            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const imageData = e.target.result;
+                localStorage.setItem(`update_${category}_${slot}`, imageData);
+                alert("Image updated! Refresh the main page to see changes.");
+            };
+            reader.readAsDataURL(file);
         }
     </script>
 </body>
