@@ -46,6 +46,17 @@
     </style>
 </head>
 <body>
+    <script>
+        function checkPassword() {
+            const password = prompt("Enter Admin Password:");
+            const correctPassword = "admin123"; // Change this to a secure method in production
+            if (password !== correctPassword) {
+                alert("Incorrect password! Access denied.");
+                window.location.href = "index.html"; // Redirect to main page if incorrect
+            }
+        }
+        checkPassword();
+    </script>
     <div class="upload-container">
         <h1>Admin Isaac</h1>
         <h2>Upload Images</h2>
@@ -126,7 +137,7 @@
                 console.log("Found images:", images);
                 console.log("Selected slot:", slot);
                 
-                if (images.length > slot) {
+                if (images.length > slot && images[slot]) {
                     images[slot].src = imageData;
                     console.log("Image updated successfully!");
                 } else {
