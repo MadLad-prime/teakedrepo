@@ -3,38 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Page</title>
+    <title>Portfolio</title>
     <link rel="stylesheet" href="styles_v6.css">
     <style>
         body {
             display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f0f0f0;
             flex-direction: column;
+            align-items: center;
+            background-color: #f0f0f0;
+            padding: 20px;
         }
-        .upload-container {
+        .section {
+            width: 80%;
             background: #fff;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .section h2 {
             text-align: center;
-        }
-        .upload-container h1 {
-            margin-bottom: 20px;
-        }
-        .upload-container h2 {
-            margin-bottom: 20px;
-        }
-        .upload-container input[type="file"] {
-            margin-bottom: 10px;
         }
         .preview-container {
             display: flex;
             flex-wrap: wrap;
-            margin-top: 20px;
             gap: 10px;
+            justify-content: center;
         }
         .preview-container img {
             width: 100px;
@@ -49,47 +43,41 @@
     <script>
         function checkPassword() {
             const password = prompt("Enter Admin Password:");
-            const correctPassword = "admin123"; // Change this to a secure method in production
+            const correctPassword = "admin123";
             if (password !== correctPassword || password === null) {
                 alert("Incorrect password! Access denied.");
-                window.location.href = "index.html"; // Redirect to main page if incorrect
+                window.location.href = "index.html";
             }
         }
         checkPassword();
     </script>
-    <div class="upload-container">
-        <h1>Admin Isaac</h1>
+    
+    <div class="section">
+        <h2>Services</h2>
+        <div class="preview-container" id="services"></div>
+    </div>
+    
+    <div class="section">
+        <h2>Projects</h2>
+        <div class="preview-container" id="projects"></div>
+    </div>
+    
+    <div class="section upload-container">
         <h2>Upload Images</h2>
         <label for="image-category">Select Category:</label>
         <select id="image-category" onchange="updateSlotOptions()">
             <option value="services">Services</option>
             <option value="projects">Projects</option>
-            <option value="about">About</option>
         </select>
         <label for="image-slot">Select Image Slot:</label>
         <select id="image-slot"></select>
         <input type="file" id="file-input" accept="image/*">
         <button onclick="uploadImage()">Upload</button>
-        <div class="preview-container" id="preview"></div>
     </div>
     
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            document.getElementById('file-input').addEventListener('change', function(event) {
-                const previewContainer = document.getElementById('preview');
-                previewContainer.innerHTML = '';
-                const file = event.target.files[0];
-                
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        const img = document.createElement('img');
-                        img.src = e.target.result;
-                        previewContainer.appendChild(img);
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
+            loadImages();
             updateSlotOptions();
         });
 
@@ -98,16 +86,9 @@
             const slotSelect = document.getElementById('image-slot');
             slotSelect.innerHTML = '';
             
-            if (category === 'about') {
-                slotSelect.innerHTML = '<option value="0">Main Image</option>';
-            } else if (category === 'services') {
-                for (let i = 0; i < 3; i++) {
-                    slotSelect.innerHTML += `<option value="${i}">Image ${i + 1}</option>`;
-                }
-            } else if (category === 'projects') {
-                for (let i = 0; i < 9; i++) {
-                    slotSelect.innerHTML += `<option value="${i}">Image ${i + 1}</option>`;
-                }
+            const slots = category === 'services' ? 3 : 9;
+            for (let i = 0; i < slots; i++) {
+                slotSelect.innerHTML += `<option value="${i}">Image ${i + 1}</option>`;
             }
         }
 
@@ -124,30 +105,27 @@
             const reader = new FileReader();
             reader.onload = function(e) {
                 const imageData = e.target.result;
-                
-                // Save to localStorage
                 const key = `update_${category}_${slot}`;
                 localStorage.setItem(key, imageData);
-                alert("Image updated! Refresh the main page to see changes.");
-
-                const mainPage = window.opener || window.parent;
-                if (!mainPage) {
-                    console.warn("Main page not found. Make sure the admin page is opened from the main page.");
-                    return;
-                }
-                
-                const images = mainPage.document.querySelectorAll(`#${category} img`);
-                console.log("Found images:", images);
-                console.log("Selected slot:", slot);
-                
-                if (images.length > slot && images[slot]) {
-                    images[slot].src = imageData;
-                    console.log("Image updated successfully!");
-                } else {
-                    alert("Selected slot is out of range. Available slots: " + images.length);
-                }
+                alert("Image updated! Refresh the page to see changes.");
+                loadImages();
             };
             reader.readAsDataURL(file);
+        }
+        
+        function loadImages() {
+            ['services', 'projects'].forEach(category => {
+                const container = document.getElementById(category);
+                container.innerHTML = '';
+                const slots = category === 'services' ? 3 : 9;
+                for (let i = 0; i < slots; i++) {
+                    const key = `update_${category}_${i}`;
+                    const imageData = localStorage.getItem(key);
+                    const img = document.createElement('img');
+                    img.src = imageData ? imageData : 'placeholder.jpg';
+                    container.appendChild(img);
+                }
+            });
         }
     </script>
 </body>
