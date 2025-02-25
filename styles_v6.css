@@ -272,6 +272,26 @@ section.visible {
     opacity: 1;
     transform: translateY(0);
 }
+ footer p a:hover {
+        transform: scale(1.2);
+    }
+
+    /* Specific colors for each platform */
+    footer p a[href*="facebook.com"] {
+        color: #1877F2;
+    }
+
+    footer p a[href*="twitter.com"] {
+        color: #1DA1F2;
+    }
+
+    footer p a[href*="instagram.com"] {
+        color: #E4405F;
+    }
+
+    footer p a[href*="tiktok.com"] {
+        color: #000000;
+    }
 
 /* Media Queries */
 @media (max-width: 768px) {
