@@ -281,9 +281,7 @@ section.visible {
         color: #1877F2;
     }
 
-    footer p a[href*="twitter.com"] {
-        color: #1DA1F2;
-    }
+    
 
     footer p a[href*="instagram.com"] {
         color: #E4405F;
