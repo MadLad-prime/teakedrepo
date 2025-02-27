@@ -29,12 +29,10 @@ function updateSlotOptions() {
     for (let i = 0; i < slots; i++) {
         let option = document.createElement("option");
         option.value = i;
-        // Corrected template literal syntax
-        option.textContent = `Image ${i + 1}`;
+        option.textContent = `Image ${i + 1}`; // ✅ Fixed template literals
         slotSelect.appendChild(option);
     }
 }
-
 
 function openUploadWidget() {
     console.log("openUploadWidget function called");  // Debugging check
@@ -64,7 +62,7 @@ function openUploadWidget() {
         (error, result) => {
             if (!error && result && result.event === "success") {
                 const imageUrl = result.info.secure_url;
-                const key = update_${category}_${slot};
+                const key = `update_${category}_${slot}`; // ✅ Fixed template literals
                 localStorage.setItem(key, imageUrl);
                 alert("Image uploaded successfully!");
             } else if (error) {
