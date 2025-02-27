@@ -53,25 +53,37 @@
         </div>
     </section>
 
+    <!-- Uploaded Image Section -->
+    <section id="uploaded-images">
+        <h2>Uploaded Images</h2>
+        <div id="uploaded-image-container">
+            <!-- Uploaded images will appear here -->
+        </div>
+    </section>
+
     <script>
+        // Play YouTube video
         function playVideo(container) {
             container.innerHTML = '<iframe width="100%" height="315" src="https://www.youtube.com/embed/AU4mQDrCpIs?autoplay=1" frameborder="0" allowfullscreen></iframe>';
         }
 
+        // Load images from localStorage
         function loadImages() {
-            ['services', 'projects'].forEach(category => {
-                const slots = category === 'services' ? 3 : 9;
-                for (let i = 0; i < slots; i++) {
-                    const key = update_${category}_${i};
-                    const imageUrl = localStorage.getItem(key);
-                    if (imageUrl) {
-                        const imgElement = document.getElementById(${category}-${i});
-                        if (imgElement) imgElement.src = imageUrl;
-                    }
-                }
-            });
+            const uploadedImageContainer = document.getElementById("uploaded-image-container");
+            const imageUrl = localStorage.getItem("uploadedImage");
+
+            if (imageUrl) {
+                const imgElement = document.createElement("img");
+                imgElement.src = imageUrl;
+                imgElement.alt = "Uploaded Image";
+                imgElement.style.maxWidth = "100%";
+                uploadedImageContainer.appendChild(imgElement);
+            } else {
+                console.log("No image uploaded yet.");
+            }
         }
 
+        // Load images when the page loads
         window.onload = loadImages;
     </script>
 
