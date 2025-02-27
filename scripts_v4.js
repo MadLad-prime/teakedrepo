@@ -51,10 +51,22 @@ document.addEventListener("DOMContentLoaded", function () {
     lazyLoadImages();
     window.addEventListener("scroll", lazyLoadImages);
 
-    // Ensure latest images load on refresh
+    // Ensure latest images load on refresh without breaking localStorage updates
     window.onload = function () {
+        console.log("Refreshing images while keeping LocalStorage data...");
+
         document.querySelectorAll("img").forEach((img) => {
-            img.src = img.src.split("?")[0] + "?t=" + new Date().getTime();
+            const imgId = img.id;
+            const localStorageKey = `update_${imgId}`;
+
+            if (imgId && localStorage.getItem(localStorageKey)) {
+                // Use stored image URL if available
+                img.src = localStorage.getItem(localStorageKey) + "?t=" + new Date().getTime();
+                console.log(`Updated ${imgId} from LocalStorage`);
+            } else {
+                // Apply cache-busting to other images
+                img.src = img.src.split("?")[0] + "?t=" + new Date().getTime();
+            }
         });
     };
 
