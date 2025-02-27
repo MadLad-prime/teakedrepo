@@ -7,16 +7,45 @@
     <link rel="stylesheet" href="styles_v6.css">
     <!-- Cloudinary Upload Widget -->
     <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
-    <script src="admin.js"></script>  <!-- Link to your admin.js file -->
+    <script src="admin.js"></script>
 </head>
 <body>
     <div class="upload-container">
         <h2>Upload Images</h2>
+        <label for="image-category">Select Category:</label>
+        <select id="image-category" onchange="updateSlotOptions()">
+            <option value="services">Services</option>
+            <option value="projects">Projects</option>
+        </select>
+
+        <label for="image-slot">Select Image Slot:</label>
+        <select id="image-slot"></select>
+
         <button onclick="openUploadWidget()">Upload Image</button>
+        <button onclick="clearImages()">Clear All Images</button>
     </div>
 
     <script>
+        // Initialize dropdown options
+        function updateSlotOptions() {
+            const category = document.getElementById("image-category").value;
+            const slotSelect = document.getElementById("image-slot");
+            slotSelect.innerHTML = "";
+
+            const slots = 3; // 3 slots for both services and projects
+            for (let i = 0; i < slots; i++) {
+                const option = document.createElement("option");
+                option.value = i;
+                option.textContent = Image ${i + 1};
+                slotSelect.appendChild(option);
+            }
+        }
+
+        // Open Cloudinary upload widget
         function openUploadWidget() {
+            const category = document.getElementById("image-category").value;
+            const slot = document.getElementById("image-slot").value;
+
             const cloudName = "dujlwpbrv";  // Replace with your Cloudinary cloud name
             const uploadPreset = "isaac092";  // Replace with your upload preset
 
@@ -33,10 +62,9 @@
                 (error, result) => {
                     if (!error && result && result.event === "success") {
                         const imageUrl = result.info.secure_url;
-                        console.log("Image URL:", imageUrl);
+                        const key = update_${category}_${slot}; // Save with category and slot
+                        localStorage.setItem(key, imageUrl);
                         alert("Image uploaded successfully!");
-                        // Save the image URL to localStorage
-                        localStorage.setItem("uploadedImage", imageUrl);
                     } else if (error) {
                         console.error("Upload error:", error);
                         alert("Upload failed. Please try again.");
@@ -46,6 +74,19 @@
 
             myWidget.open();
         }
+
+        // Clear all images from localStorage
+        function clearImages() {
+            if (confirm("Are you sure you want to clear all images?")) {
+                localStorage.clear();
+                alert("All images cleared.");
+            }
+        }
+
+        // Initialize dropdown options on page load
+        document.addEventListener("DOMContentLoaded", function () {
+            updateSlotOptions();
+        });
     </script>
 </body>
 </html>
