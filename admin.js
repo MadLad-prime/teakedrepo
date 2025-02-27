@@ -47,13 +47,13 @@ function updateSlotOptions() {
 }
 
 function openUploadWidget() {
-    console.log("openUploadWidget function called");  // Debugging check
+    console.log("openUploadWidget function called");
 
     const category = document.getElementById("image-category").value;
     const slot = document.getElementById("image-slot").value;
 
-    const cloudName = "dujlwpbrv";  // Replace with your Cloudinary cloud name
-    const uploadPreset = "isaac092";  // Replace with your upload preset
+    const cloudName = "dujlwpbrv";  
+    const uploadPreset = "isaac092";  
 
     if (!window.cloudinary) {
         console.error("Cloudinary script not loaded!");
@@ -72,7 +72,7 @@ function openUploadWidget() {
             maxFileSize: 5000000,
         },
         (error, result) => {
-            console.log("Cloudinary Upload Response:", result); // Debugging log
+            console.log("Cloudinary Upload Response:", result);
 
             if (!error && result && result.event === "success") {
                 const imageUrl = result.info.secure_url;
@@ -80,8 +80,11 @@ function openUploadWidget() {
 
                 const key = `update_${category}_${slot}`;
                 localStorage.setItem(key, imageUrl);
+                console.log(`Stored in LocalStorage: ${key} = ${imageUrl}`);
+
                 alert("Image uploaded successfully!");
 
+                // Immediately update the UI
                 displayImage(imageUrl, key);
             } else if (error) {
                 console.error("Upload error:", error);
@@ -92,6 +95,7 @@ function openUploadWidget() {
 
     myWidget.open();
 }
+
 
 // Display uploaded image immediately after uploading
 function displayImage(url, key) {
