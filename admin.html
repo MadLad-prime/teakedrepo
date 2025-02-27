@@ -1,129 +1,99 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Upload</title>
-    <link rel="stylesheet" href="styles_v6.css">
-    <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background-color: #f0f0f0;
-            padding: 20px;
-        }
-        .upload-container {
-            width: 80%;
-            background: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-        .preview {
-            margin-top: 10px;
-            max-width: 100%;
-            height: auto;
-            border: 2px solid #ddd;
-            border-radius: 5px;
-            display: none;
-        }
-    </style>
-</head>
-<body>
-    <script>
-        function checkPassword() {
-            const password = prompt("Enter Admin Password:");
-            const correctPassword = "admin123";
-            if (password !== correctPassword || password === null) {
-                alert("Incorrect password! Access denied.");
-                window.location.href = "index.html";
-            }
-        }
-        checkPassword();
-    </script>
+   <html lang="en">
+   <head>
+       <meta charset="UTF-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <title>Admin Upload</title>
+       <link rel="stylesheet" href="styles_v6.css">
+       <style>
+           /* Add your existing styles here */
+       </style>
+       <!-- Cloudinary Upload Widget -->
+       <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
+   </head>
+   <body>
+       <script>
+           function checkPassword() {
+               const password = prompt("Enter Admin Password:");
+               const correctPassword = "admin123";
+               if (password !== correctPassword || password === null) {
+                   alert("Incorrect password! Access denied.");
+                   window.location.href = "index.html";
+               }
+           }
+           checkPassword();
+       </script>
 
-    <div class="upload-container">
-        <h2>Upload Images</h2>
-        <label for="image-category">Select Category:</label>
-        <select id="image-category" onchange="updateSlotOptions()">
-            <option value="services">Services</option>
-            <option value="projects">Projects</option>
-        </select>
+       <div class="upload-container">
+           <h2>Upload Images</h2>
+           <label for="image-category">Select Category:</label>
+           <select id="image-category" onchange="updateSlotOptions()">
+               <option value="services">Services</option>
+               <option value="projects">Projects</option>
+           </select>
 
-        <label for="image-slot">Select Image Slot:</label>
-        <select id="image-slot"></select>
+           <label for="image-slot">Select Image Slot:</label>
+           <select id="image-slot"></select>
 
-        <input type="file" id="file-input" accept="image/*" onchange="previewImage()">
-        <br>
-        <img id="image-preview" class="preview">
-        <br>
-        <button onclick="uploadImage()">Upload</button>
-        <button onclick="clearImages()">Clear All Images</button>
-    </div>
+           <button onclick="openUploadWidget()">Upload Image</button>
+           <button onclick="clearImages()">Clear All Images</button>
+       </div>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            updateSlotOptions();
-        });
+       <script>
+           document.addEventListener("DOMContentLoaded", function() {
+               updateSlotOptions();
+           });
 
-        function updateSlotOptions() {
-            const category = document.getElementById('image-category').value;
-            const slotSelect = document.getElementById('image-slot');
-            slotSelect.innerHTML = '';
+           function updateSlotOptions() {
+               const category = document.getElementById('image-category').value;
+               const slotSelect = document.getElementById('image-slot');
+               slotSelect.innerHTML = '';
 
-            const slots = category === 'services' ? 3 : 9;
-            for (let i = 0; i < slots; i++) {
-                slotSelect.innerHTML += `<option value="${i}">Image ${i + 1}</option>`;
-            }
-        }
+               const slots = category === 'services' ? 3 : 9;
+               for (let i = 0; i < slots; i++) {
+                   slotSelect.innerHTML += <option value="${i}">Image ${i + 1}</option>;
+               }
+           }
 
-        function previewImage() {
-            const file = document.getElementById('file-input').files[0];
-            if (!file) return;
+           function openUploadWidget() {
+               const category = document.getElementById('image-category').value;
+               const slot = document.getElementById('image-slot').value;
 
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const preview = document.getElementById('image-preview');
-                preview.src = e.target.result;
-                preview.style.display = "block";
-            };
-            reader.readAsDataURL(file);
-        }
+               const cloudName = "YOUR_CLOUD_NAME"; // Replace with your Cloudinary cloud name
+               const uploadPreset = "YOUR_UPLOAD_PRESET"; // Replace with your upload preset
 
-        function uploadImage() {
-            const file = document.getElementById('file-input').files[0];
-            const category = document.getElementById('image-category').value;
-            const slot = document.getElementById('image-slot').value;
+               const myWidget = cloudinary.createUploadWidget(
+                   {
+                       cloudName: cloudName,
+                       uploadPreset: uploadPreset,
+                       sources: ["local", "url"], // Allow local files and URLs
+                       multiple: false, // Allow only one file at a time
+                       cropping: false, // Disable cropping
+                       resourceType: "image", // Only allow images
+                       maxFileSize: 5000000, // 5 MB file size limit
+                   },
+                   (error, result) => {
+                       if (!error && result && result.event === "success") {
+                           const imageUrl = result.info.secure_url;
+                           const key = update_${category}_${slot};
+                           localStorage.setItem(key, imageUrl);
+                           alert("Image uploaded successfully!");
+                       } else if (error) {
+                           console.error("Upload error:", error);
+                           alert("Upload failed. Please try again.");
+                       }
+                   }
+               );
 
-            if (!file) {
-                alert("No file selected.");
-                return;
-            }
+               myWidget.open();
+           }
 
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const imageData = e.target.result;
-                const key = `update_${category}_${slot}`;
-
-                if (imageData.startsWith("data:image")) {
-                    localStorage.setItem(key, imageData);
-                    alert("Image updated! Refresh the page to see changes.");
-                    document.getElementById('image-preview').style.display = "none";
-                } else {
-                    alert("Invalid image format. Please try again.");
-                }
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function clearImages() {
-            if (confirm("Are you sure you want to clear all images?")) {
-                localStorage.clear();
-                alert("All images cleared.");
-            }
-        }
-    </script>
-</body>
-</html>
+           function clearImages() {
+               if (confirm("Are you sure you want to clear all images?")) {
+                   localStorage.clear();
+                   alert("All images cleared.");
+               }
+           }
+       </script>
+   </body>
+   </html>
