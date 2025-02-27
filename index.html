@@ -58,18 +58,18 @@
         }
 
         function loadImages() {
-            ['services', 'projects'].forEach(category => {
-                const slots = category === 'services' ? 3 : 9;
-                for (let i = 0; i < slots; i++) {
-                    const key = `update_${category}_${i}`;
-                    const imageData = localStorage.getItem(key);
-                    if (imageData) {
-                        const imgElement = document.getElementById(`${category}-${i}`);
-                        if (imgElement) imgElement.src = imageData;
-                    }
-                }
-            });
+    ['services', 'projects'].forEach(category => {
+        const slots = category === 'services' ? 3 : 9;
+        for (let i = 0; i < slots; i++) {
+            const key = update_${category}_${i};
+            const imageUrl = localStorage.getItem(key);
+            if (imageUrl) {
+                const imgElement = document.getElementById(${category}-${i});
+                if (imgElement) imgElement.src = imageUrl;
+            }
         }
+    });
+}
 
         window.onload = loadImages;
     </script>
