@@ -29,11 +29,10 @@ function updateSlotOptions() {
     for (let i = 0; i < slots; i++) {
         let option = document.createElement("option");
         option.value = i;
-        option.textContent = `Image ${i + 1}`;
+        option.textContent = Image ${i + 1};
         slotSelect.appendChild(option);
     }
 }
-
 
 function openUploadWidget() {
     console.log("openUploadWidget function called");  // Debugging check
