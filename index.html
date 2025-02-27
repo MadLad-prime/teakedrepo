@@ -3,127 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Upload</title>
+    <title>Good Isaac Home Concepts</title>
     <link rel="stylesheet" href="styles_v6.css">
-    <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background-color: #f0f0f0;
-            padding: 20px;
-        }
-        .upload-container {
-            width: 80%;
-            background: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-        .preview {
-            margin-top: 10px;
-            max-width: 100%;
-            height: auto;
-            border: 2px solid #ddd;
-            border-radius: 5px;
-            display: none;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+    <!-- Header Section -->
+    <header>
+        <h1>Good Isaac Home Concepts</h1>
+        <img id="profile-image" class="cache-bust" src="images/isaac_img1.jpg" alt="profile">
+        <div class="header-content">
+            <h2>Good Isaac Home Concepts</h2>
+            <p>Welcome to Good Isaac Home Concepts, we specialize in all types of exterior and interior finishes, design and installation of contemporary kitchen cabinets, wardrobes, office furniture.
+        </div>
+        <button id="menu-button">☰ Menu</button>
+        <div class="dropdown" id="dropdown-menu">
+            <a href="portfolio.html">Portfolio</a>
+            <a href="tel:+254710593221">Call Us</a>
+        </div>
+    </header>
+
+    <!-- Services Section -->
+    <section id="services">
+        <h2>Our Services</h2>
+        <ul>
+            <li><img id="services-0" class="cache-bust" src="images/isaac_img11.jpg" alt="Custom Bookshelf and Study Table."><p>Custom Bookshelf and Study Table.</p></li>
+            <li><img id="services-1" class="cache-bust" src="images/isaac_img6.jpg" alt="Renovation - Design and Installation of Wardrobes."><p>Renovation - Design and Installation of Wardrobes.</p></li>
+            <li><img id="services-2" class="cache-bust" src="images/isaac_img14.jpg" alt="Design of Contemporary Shoe Rack."><p>Design of Contemporary Shoe Rack.</p></li>
+        </ul>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects">
+        <h2>Latest Projects</h2>
+        <div class="project-grid">
+            <div><img id="projects-0" class="cache-bust" src="images/isaac_img16.jpg" alt="Iron Board Station"><p>Iron Board Station</p></div>
+            <div><img id="projects-1" class="cache-bust" src="images/isaac_img17.jpg" alt="Cabinet"><p>Cabinet</p></div>
+            <div><img id="projects-2" class="cache-bust" src="images/isaac_img18.jpg" alt="Cupboard"><p>Cupboard</p></div>
+        </div>
+    </section>
+
+    <!-- Video Section -->
+    <section id="video">
+        <h2>Watch Our Work</h2>
+        <div class="video-thumbnail" onclick="playVideo(this)">
+            <img class="cache-bust" src="https://img.youtube.com/vi/AU4mQDrCpIs/maxresdefault.jpg" alt="Watch Our Work">
+            <div class="play-button">&#9658;</div>
+        </div>
+    </section>
+
     <script>
-        function checkPassword() {
-            const password = prompt("Enter Admin Password:");
-            const correctPassword = "admin123";
-            if (password !== correctPassword || password === null) {
-                alert("Incorrect password! Access denied.");
-                window.location.href = "index.html";
-            }
+        function playVideo(container) {
+            container.innerHTML = '<iframe width="100%" height="315" src="https://www.youtube.com/embed/AU4mQDrCpIs?autoplay=1" frameborder="0" allowfullscreen></iframe>';
         }
-        checkPassword();
+
+        function loadImages() {
+            ['services', 'projects'].forEach(category => {
+                const slots = category === 'services' ? 3 : 9;
+                for (let i = 0; i < slots; i++) {
+                    const key = `update_${category}_${i}`;
+                    const imageData = localStorage.getItem(key);
+                    if (imageData) {
+                        const imgElement = document.getElementById(`${category}-${i}`);
+                        if (imgElement) imgElement.src = imageData;
+                    }
+                }
+            });
+        }
+
+        window.onload = loadImages;
     </script>
 
-    <div class="upload-container">
-        <h2>Upload Images</h2>
-        <label for="image-category">Select Category:</label>
-        <select id="image-category" onchange="updateSlotOptions()">
-            <option value="services">Services</option>
-            <option value="projects">Projects</option>
-        </select>
 
-        <label for="image-slot">Select Image Slot:</label>
-        <select id="image-slot"></select>
-
-        <input type="file" id="file-input" accept="image/*" onchange="previewImage()">
-        <br>
-        <img id="image-preview" class="preview">
-        <br>
-        <button onclick="uploadImage()">Upload</button>
-        <button onclick="clearImages()">Clear All Images</button>
+    <!-- Admin Button -->
+    <div style="text-align: center; margin: 40px 0;">
+        <a href="admin.html">
+            <button id="admin-button" style="padding: 12px 24px; font-size: 16px; background-color: #333; color: white; border: none; cursor: pointer; border-radius: 5px;">Admin</button>
+        </a>
     </div>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            updateSlotOptions();
-        });
+    <!-- Footer Section -->
+    <footer>
+        <h3>Good Isaac Home Concepts</h3>
+        <p>Email: abdalamarenya@gmail.com</p>
+        <p>Phone: +254 710593221 | +254 773289470</p>
+        <p>Location: Nairobi, Kenya, Nasra Gardens Estate, Gate A Junction</p>
+        <p>
+            <a href="https://www.facebook.com/profile.php?id=61555669754205" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+            <a href="https://www.instagram.com/izaacabdala?igsh=MXZ1NXcxeXhtb2t3OQ==" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://www.tiktok.com/@user92493734966723?_t=ZM-8uDkAdjE53u&_r=1" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
+        </p>
+    </footer>
 
-        function updateSlotOptions() {
-            const category = document.getElementById('image-category').value;
-            const slotSelect = document.getElementById('image-slot');
-            slotSelect.innerHTML = '';
-
-            const slots = category === 'services' ? 3 : 9;
-            for (let i = 0; i < slots; i++) {
-                slotSelect.innerHTML += `<option value="${i}">Image ${i + 1}</option>`;
-            }
-        }
-
-        function previewImage() {
-            const file = document.getElementById('file-input').files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const preview = document.getElementById('image-preview');
-                preview.src = e.target.result;
-                preview.style.display = "block";
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function uploadImage() {
-            const file = document.getElementById('file-input').files[0];
-            const category = document.getElementById('image-category').value;
-            const slot = document.getElementById('image-slot').value;
-
-            if (!file) {
-                alert("No file selected.");
-                return;
-            }
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const imageData = e.target.result;
-                const key = `update_${category}_${slot}`;
-
-                if (imageData.startsWith("data:image")) {
-                    localStorage.setItem(key, imageData);
-                    alert("Image updated! Refresh the page to see changes.");
-                    document.getElementById('image-preview').style.display = "none";
-                } else {
-                    alert("Invalid image format. Please try again.");
-                }
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function clearImages() {
-            if (confirm("Are you sure you want to clear all images?")) {
-                localStorage.clear();
-                alert("All images cleared.");
-            }
-        }
-    </script>
+    <script src="scripts_v4.js"></script>
 </body>
 </html>
