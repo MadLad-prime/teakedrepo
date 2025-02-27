@@ -14,7 +14,7 @@
         <img id="profile-image" class="cache-bust" src="images/isaac_img1.jpg" alt="profile">
         <div class="header-content">
             <h2>Good Isaac Home Concepts</h2>
-            <p>Welcome to Good Isaac Home Concepts, we specialize in all types of exterior and interior finishes, design and installation of contemporary kitchen cabinets, wardrobes, office furniture.
+            <p>Welcome to Good Isaac Home Concepts, we specialize in all types of exterior and interior finishes, design and installation of contemporary kitchen cabinets, wardrobes, office furniture.</p>
         </div>
         <button id="menu-button">☰ Menu</button>
         <div class="dropdown" id="dropdown-menu">
@@ -58,22 +58,21 @@
         }
 
         function loadImages() {
-    ['services', 'projects'].forEach(category => {
-        const slots = category === 'services' ? 3 : 9;
-        for (let i = 0; i < slots; i++) {
-            const key = update_${category}_${i};
-            const imageUrl = localStorage.getItem(key);
-            if (imageUrl) {
-                const imgElement = document.getElementById(${category}-${i});
-                if (imgElement) imgElement.src = imageUrl;
-            }
+            ['services', 'projects'].forEach(category => {
+                const slots = category === 'services' ? 3 : 9;
+                for (let i = 0; i < slots; i++) {
+                    const key = update_${category}_${i};
+                    const imageUrl = localStorage.getItem(key);
+                    if (imageUrl) {
+                        const imgElement = document.getElementById(${category}-${i});
+                        if (imgElement) imgElement.src = imageUrl;
+                    }
+                }
+            });
         }
-    });
-}
 
         window.onload = loadImages;
     </script>
-
 
     <!-- Admin Button -->
     <div style="text-align: center; margin: 40px 0;">
