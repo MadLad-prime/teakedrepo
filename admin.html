@@ -21,6 +21,14 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
+        .preview {
+            margin-top: 10px;
+            max-width: 100%;
+            height: auto;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -35,7 +43,7 @@
         }
         checkPassword();
     </script>
-    
+
     <div class="upload-container">
         <h2>Upload Images</h2>
         <label for="image-category">Select Category:</label>
@@ -43,12 +51,18 @@
             <option value="services">Services</option>
             <option value="projects">Projects</option>
         </select>
+
         <label for="image-slot">Select Image Slot:</label>
         <select id="image-slot"></select>
-        <input type="file" id="file-input" accept="image/*">
+
+        <input type="file" id="file-input" accept="image/*" onchange="previewImage()">
+        <br>
+        <img id="image-preview" class="preview">
+        <br>
         <button onclick="uploadImage()">Upload</button>
+        <button onclick="clearImages()">Clear All Images</button>
     </div>
-    
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             updateSlotOptions();
@@ -58,18 +72,31 @@
             const category = document.getElementById('image-category').value;
             const slotSelect = document.getElementById('image-slot');
             slotSelect.innerHTML = '';
-            
+
             const slots = category === 'services' ? 3 : 9;
             for (let i = 0; i < slots; i++) {
                 slotSelect.innerHTML += `<option value="${i}">Image ${i + 1}</option>`;
             }
         }
 
+        function previewImage() {
+            const file = document.getElementById('file-input').files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const preview = document.getElementById('image-preview');
+                preview.src = e.target.result;
+                preview.style.display = "block";
+            };
+            reader.readAsDataURL(file);
+        }
+
         function uploadImage() {
             const file = document.getElementById('file-input').files[0];
             const category = document.getElementById('image-category').value;
-            const slot = parseInt(document.getElementById('image-slot').value);
-            
+            const slot = document.getElementById('image-slot').value;
+
             if (!file) {
                 alert("No file selected.");
                 return;
@@ -79,10 +106,23 @@
             reader.onload = function(e) {
                 const imageData = e.target.result;
                 const key = `update_${category}_${slot}`;
-                localStorage.setItem(key, imageData);
-                alert("Image updated! Refresh the page to see changes.");
+
+                if (imageData.startsWith("data:image")) {
+                    localStorage.setItem(key, imageData);
+                    alert("Image updated! Refresh the page to see changes.");
+                    document.getElementById('image-preview').style.display = "none";
+                } else {
+                    alert("Invalid image format. Please try again.");
+                }
             };
             reader.readAsDataURL(file);
+        }
+
+        function clearImages() {
+            if (confirm("Are you sure you want to clear all images?")) {
+                localStorage.clear();
+                alert("All images cleared.");
+            }
         }
     </script>
 </body>
