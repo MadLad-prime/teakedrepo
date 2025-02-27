@@ -1,6 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
+    console.log("admin.js loaded");  // Debugging check
     checkPassword();
-    updateSlotOptions(); // Ensure this runs when the page loads
+    updateSlotOptions();
+    document.getElementById("image-category").addEventListener("change", updateSlotOptions);
 });
 
 function checkPassword() {
@@ -13,11 +15,17 @@ function checkPassword() {
 }
 
 function updateSlotOptions() {
-    const category = document.getElementById("image-category").value;
+    const category = document.getElementById("image-category");
     const slotSelect = document.getElementById("image-slot");
-    slotSelect.innerHTML = ""; // Clear existing options
+    
+    if (!category || !slotSelect) {
+        console.error("Error: Dropdown elements not found!");
+        return;
+    }
 
-    const slots = category === "services" ? 3 : 9;
+    slotSelect.innerHTML = "";
+    const slots = category.value === "services" ? 3 : 9;
+
     for (let i = 0; i < slots; i++) {
         let option = document.createElement("option");
         option.value = i;
@@ -27,11 +35,19 @@ function updateSlotOptions() {
 }
 
 function openUploadWidget() {
+    console.log("openUploadWidget function called");  // Debugging check
+
     const category = document.getElementById("image-category").value;
     const slot = document.getElementById("image-slot").value;
 
-    const cloudName = "dujlwpbrv"; // Replace with your Cloudinary cloud name
-    const uploadPreset = "isaac092"; // Replace with your upload preset
+    const cloudName = "dujlwpbrv";  // Replace with your Cloudinary cloud name
+    const uploadPreset = "isaac092";  // Replace with your upload preset
+
+    if (!window.cloudinary) {
+        console.error("Cloudinary script not loaded!");
+        alert("Upload feature is unavailable. Please check Cloudinary settings.");
+        return;
+    }
 
     const myWidget = cloudinary.createUploadWidget(
         {
@@ -41,7 +57,7 @@ function openUploadWidget() {
             multiple: false,
             cropping: false,
             resourceType: "image",
-            maxFileSize: 5000000, // 5MB file limit
+            maxFileSize: 5000000,
         },
         (error, result) => {
             if (!error && result && result.event === "success") {
