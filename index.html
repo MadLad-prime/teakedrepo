@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Good Isaac Home Concepts</title>
     <link rel="stylesheet" href="styles_v6.css">
@@ -53,14 +52,6 @@
         </div>
     </section>
 
-    <!-- Uploaded Image Section -->
-    <section id="uploaded-images">
-        <h2>Uploaded Images</h2>
-        <div id="uploaded-image-container">
-            <!-- Uploaded images will appear here -->
-        </div>
-    </section>
-
     <script>
         // Play YouTube video
         function playVideo(container) {
@@ -69,18 +60,17 @@
 
         // Load images from localStorage
         function loadImages() {
-            const uploadedImageContainer = document.getElementById("uploaded-image-container");
-            const imageUrl = localStorage.getItem("uploadedImage");
-
-            if (imageUrl) {
-                const imgElement = document.createElement("img");
-                imgElement.src = imageUrl;
-                imgElement.alt = "Uploaded Image";
-                imgElement.style.maxWidth = "100%";
-                uploadedImageContainer.appendChild(imgElement);
-            } else {
-                console.log("No image uploaded yet.");
-            }
+            ['services', 'projects'].forEach(category => {
+                const slots = 3; // 3 slots for both services and projects
+                for (let i = 0; i < slots; i++) {
+                    const key = update_${category}_${i};
+                    const imageUrl = localStorage.getItem(key);
+                    if (imageUrl) {
+                        const imgElement = document.getElementById(${category}-${i});
+                        if (imgElement) imgElement.src = imageUrl;
+                    }
+                }
+            });
         }
 
         // Load images when the page loads
