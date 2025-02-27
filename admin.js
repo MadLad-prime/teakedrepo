@@ -130,8 +130,14 @@ function loadSavedImages() {
 
 function clearImages() {
     if (confirm("Are you sure you want to clear all images?")) {
-        localStorage.clear();
-        alert("All images cleared.");
+        Object.keys(localStorage).forEach((key) => {
+            if (key.startsWith("update_")) {
+                localStorage.removeItem(key);
+            }
+        });
+
+        alert("All uploaded images cleared.");
         document.querySelectorAll(".upload-container img").forEach(img => img.remove());
     }
 }
+
