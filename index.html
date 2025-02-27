@@ -62,17 +62,17 @@
     console.log("Loading images from localStorage...");
 
     ['services', 'projects'].forEach(category => {
-        const slots = 3; // 3 slots for both services and projects
+        const slots = 3;
         for (let i = 0; i < slots; i++) {
             const key = `update_${category}_${i}`;
             const imageUrl = localStorage.getItem(key);
             
             if (imageUrl) {
-                console.log(`Updating ${key} with URL: ${imageUrl}`); // Debugging log
+                console.log(`Updating ${key} with URL: ${imageUrl}`);
 
                 const imgElement = document.getElementById(`${category}-${i}`);
                 if (imgElement) {
-                    imgElement.src = imageUrl + `?timestamp=${new Date().getTime()}`; // Force refresh
+                    imgElement.src = imageUrl + `?timestamp=${new Date().getTime()}`; // Cache busting
                     console.log(`Successfully updated ${category}-${i}`);
                 } else {
                     console.warn(`Image element ${category}-${i} not found.`);
@@ -82,10 +82,14 @@
             }
         }
     });
+
+    // Debugging: Print localStorage contents
+    console.log("Current LocalStorage data:", localStorage);
 }
 
-// Ensure images load on page refresh
+// Load images when the page loads
 window.onload = function () {
+    console.log("Page loaded. Attempting to restore images...");
     loadImages();
 };
 
