@@ -12,17 +12,40 @@
 <body>
     <div class="upload-container">
         <h2>Upload Images</h2>
-        <label for="image-category">Select Category:</label>
-        <select id="image-category">
-            <option value="services">Services</option>
-            <option value="projects">Projects</option>
-        </select>
-
-        <label for="image-slot">Select Image Slot:</label>
-        <select id="image-slot"></select>
-
         <button onclick="openUploadWidget()">Upload Image</button>
-        <button onclick="clearImages()">Clear All Images</button>
     </div>
+
+    <script>
+        function openUploadWidget() {
+            const cloudName = "dujlwpbrv";  // Replace with your Cloudinary cloud name
+            const uploadPreset = "isaac092";  // Replace with your upload preset
+
+            const myWidget = cloudinary.createUploadWidget(
+                {
+                    cloudName: cloudName,
+                    uploadPreset: uploadPreset,
+                    sources: ["local", "url"],
+                    multiple: false,
+                    cropping: false,
+                    resourceType: "image",
+                    maxFileSize: 5000000,
+                },
+                (error, result) => {
+                    if (!error && result && result.event === "success") {
+                        const imageUrl = result.info.secure_url;
+                        console.log("Image URL:", imageUrl);
+                        alert("Image uploaded successfully!");
+                        // Save the image URL to localStorage
+                        localStorage.setItem("uploadedImage", imageUrl);
+                    } else if (error) {
+                        console.error("Upload error:", error);
+                        alert("Upload failed. Please try again.");
+                    }
+                }
+            );
+
+            myWidget.open();
+        }
+    </script>
 </body>
 </html>
