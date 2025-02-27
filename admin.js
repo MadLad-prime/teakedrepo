@@ -29,7 +29,6 @@ function updateSlotOptions() {
     for (let i = 0; i < slots; i++) {
         let option = document.createElement("option");
         option.value = i;
-        // Corrected template literal syntax
         option.textContent = `Image ${i + 1}`;
         slotSelect.appendChild(option);
     }
