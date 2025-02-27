@@ -1,6 +1,6 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     checkPassword();
-    updateSlotOptions();
+    updateSlotOptions(); // Ensure this runs when the page loads
 });
 
 function checkPassword() {
