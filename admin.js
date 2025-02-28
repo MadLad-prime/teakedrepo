@@ -96,6 +96,7 @@ function openUploadWidget() {
     myWidget.open();
 }
 
+   
 
 // Display uploaded image immediately after uploading
 function displayImage(url, key) {
