@@ -62,7 +62,7 @@ function updateCloudinaryJSON(category, slot, imageUrl) {
             const formData = new FormData();
             formData.append("file", jsonBlob);
             formData.append("upload_preset", "ml_default"); // Your Cloudinary upload preset
-            formData.append("public_id", "cloudinary"); // Keep the same ID for overwriting
+            formData.append("public_id", "cloudinary_p9cutd.json"); // Keep the same ID for overwriting
 
             return fetch("https://api.cloudinary.com/v1_1/dujlwpbrv/raw/upload", {
                 method: "POST",
