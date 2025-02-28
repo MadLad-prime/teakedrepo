@@ -123,11 +123,11 @@ function openUploadWidget() {
 
 // 🔹 Function to Update `cloudinary.json` on a Remote Server
 function updateCloudinaryJSON(category, slot, imageUrl) {
-    fetch("https://myserver.com/cloudinary.json")
+    fetch("https://res.cloudinary.com/dujlwpbrv/raw/upload/cloudinary_p9cutd.json")
         .then(response => response.json())
         .then(data => {
             data[category][slot] = imageUrl;  // Update image slot
-            return fetch("https://myserver.com/update-json.php", {
+            return fetch("https://api.cloudinary.com/v1_1/dujlwpbrv/raw/upload", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data)
