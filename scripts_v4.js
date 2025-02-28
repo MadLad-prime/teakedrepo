@@ -70,9 +70,11 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     };
     function loadImages() {
-    console.log("Fetching latest images from cloudinary.json...");
+    console.log("Fetching latest images from Cloudinary...");
 
-    fetch("https://myserver.com/cloudinary.json")
+    const cloudinaryJsonURL = "https://res.cloudinary.com/dujlwpbrv/raw/upload/v1234567890/cloudinary.json"; // Replace with your actual URL
+
+    fetch(cloudinaryJsonURL)
         .then(response => response.json())
         .then(data => {
             ["services", "projects"].forEach(category => {
@@ -93,10 +95,10 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch(error => console.error("Failed to load images:", error));
 }
 
-// Run this function on page load
 window.onload = function() {
     loadImages();
 };
+
 
 
     // Admin button functionality
