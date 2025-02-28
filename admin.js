@@ -48,21 +48,23 @@ function updateSlotOptions() {
 function updateCloudinaryJSON(category, slot, imageUrl) {
     console.log(`Updating cloudinary.json with ${imageUrl}`);
 
-    // Fetch the existing JSON file
-    fetch("https://res.cloudinary.com/dujlwpbrv/raw/upload/v1740780655/cloudinary_p9cutd.json")
+    // Correct Cloudinary JSON URL
+    const cloudinaryJsonURL = "https://res.cloudinary.com/dujlwpbrv/raw/upload/cloudinary_p9cutd.json";
+
+    fetch(cloudinaryJsonURL)
         .then(response => response.json())
         .then(data => {
-            // Update the specific image slot
+            // ✅ Update JSON with the new image URL
             data[category][slot] = imageUrl;
 
-            // Convert updated JSON to a Blob
+            // ✅ Convert updated JSON to a Blob
             const jsonBlob = new Blob([JSON.stringify(data)], { type: "application/json" });
 
-            // Create FormData for Cloudinary Upload
+            // ✅ Create FormData for Cloudinary Upload
             const formData = new FormData();
             formData.append("file", jsonBlob);
-            formData.append("upload_preset", "ml_default"); // Your Cloudinary upload preset
-            formData.append("public_id", "cloudinary_p9cutd.json"); // Keep the same ID for overwriting
+            formData.append("upload_preset", "isaac092"); // Your Cloudinary upload preset
+            formData.append("public_id", "cloudinary_p9cutd"); // Keep same ID to overwrite
 
             return fetch("https://api.cloudinary.com/v1_1/dujlwpbrv/raw/upload", {
                 method: "POST",
@@ -70,9 +72,10 @@ function updateCloudinaryJSON(category, slot, imageUrl) {
             });
         })
         .then(response => response.json())
-        .then(data => console.log("cloudinary.json updated:", data))
+        .then(data => console.log("cloudinary.json successfully updated:", data))
         .catch(error => console.error("Error updating cloudinary.json:", error));
 }
+
 
 
 function openUploadWidget() {
