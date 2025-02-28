@@ -45,6 +45,35 @@ function updateSlotOptions() {
         slotSelect.appendChild(option);
     }
 }
+function updateCloudinaryJSON(category, slot, imageUrl) {
+    console.log(`Updating cloudinary.json with ${imageUrl}`);
+
+    // Fetch the existing JSON file
+    fetch("https://res.cloudinary.com/dujlwpbrv/raw/upload/v1740780655/cloudinary_p9cutd.json")
+        .then(response => response.json())
+        .then(data => {
+            // Update the specific image slot
+            data[category][slot] = imageUrl;
+
+            // Convert updated JSON to a Blob
+            const jsonBlob = new Blob([JSON.stringify(data)], { type: "application/json" });
+
+            // Create FormData for Cloudinary Upload
+            const formData = new FormData();
+            formData.append("file", jsonBlob);
+            formData.append("upload_preset", "isaac092"); // Your Cloudinary upload preset
+            formData.append("public_id", "cloudinary"); // Keep the same ID for overwriting
+
+            return fetch("https://api.cloudinary.com/v1_1/dujlwpbrv/raw/upload", {
+                method: "POST",
+                body: formData,
+            });
+        })
+        .then(response => response.json())
+        .then(data => console.log("cloudinary.json updated:", data))
+        .catch(error => console.error("Error updating cloudinary.json:", error));
+}
+
 
 function openUploadWidget() {
     console.log("openUploadWidget function called");
