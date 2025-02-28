@@ -78,14 +78,10 @@ function openUploadWidget() {
                 const imageUrl = result.info.secure_url;
                 console.log("Image uploaded URL:", imageUrl);
 
-                const key = `update_${category}_${slot}`;
-                localStorage.setItem(key, imageUrl);
-                console.log(`Stored in LocalStorage: ${key} = ${imageUrl}`);
+                // Save to shared JSON file instead of localStorage
+                updateCloudinaryJSON(category, slot, imageUrl);
 
                 alert("Image uploaded successfully!");
-
-                // Immediately update the UI
-                displayImage(imageUrl, key);
             } else if (error) {
                 console.error("Upload error:", error);
                 alert("Upload failed. Please try again.");
@@ -95,6 +91,23 @@ function openUploadWidget() {
 
     myWidget.open();
 }
+
+// 🔹 Function to Update `cloudinary.json` on a Remote Server
+function updateCloudinaryJSON(category, slot, imageUrl) {
+    fetch("https://myserver.com/cloudinary.json")
+        .then(response => response.json())
+        .then(data => {
+            data[category][slot] = imageUrl;  // Update image slot
+            return fetch("https://myserver.com/update-json.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            });
+        })
+        .then(() => console.log("Updated cloudinary.json with new image."))
+        .catch(error => console.error("Failed to update cloudinary.json:", error));
+}
+
 
    
 
