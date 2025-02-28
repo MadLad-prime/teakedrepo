@@ -70,45 +70,34 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     };
     function loadImages() {
-    console.log("Loading images from localStorage...");
-    ['services', 'projects'].forEach(category => {
-        const slots = 3;
-        for (let i = 0; i < slots; i++) {
-            const key = `update_${category}_${i}`;
-            const imageUrl = localStorage.getItem(key);
-            if (imageUrl) {
-                console.log(`Updating ${key} with URL: ${imageUrl}`);
-                const imgElement = document.getElementById(`${category}-${i}`);
-                if (imgElement) {
-                    imgElement.src = imageUrl + `?timestamp=${new Date().getTime()}`;
-                    console.log(`Successfully updated ${category}-${i}`);
-                } else {
-                    console.warn(`Image element ${category}-${i} not found.`);
+    console.log("Fetching latest images from cloudinary.json...");
+
+    fetch("https://myserver.com/cloudinary.json")
+        .then(response => response.json())
+        .then(data => {
+            ["services", "projects"].forEach(category => {
+                const slots = 3;
+                for (let i = 0; i < slots; i++) {
+                    const imageUrl = data[category][i];
+                    const imgElement = document.getElementById(`${category}-${i}`);
+                    
+                    if (imageUrl && imgElement) {
+                        console.log(`Updating ${category}-${i} with ${imageUrl}`);
+                        imgElement.src = imageUrl + `?timestamp=${new Date().getTime()}`;
+                    } else {
+                        console.warn(`No image found for ${category}-${i}`);
+                    }
                 }
-            } else {
-                console.warn(`No image found in localStorage for ${key}`);
-            }
-        }
-    });
-    console.log("LocalStorage contents:", localStorage);
+            });
+        })
+        .catch(error => console.error("Failed to load images:", error));
 }
 
-function cacheBustImages() {
-    document.querySelectorAll("img.cache-bust").forEach(img => {
-        const src = img.src.split("?")[0];
-        img.src = `${src}?timestamp=${new Date().getTime()}`;
-    });
-    console.log("Cache-busting applied to images.");
-}
-
-function playVideo(container) {
-    container.innerHTML = '<iframe width="100%" height="315" src="https://www.youtube.com/embed/AU4mQDrCpIs?autoplay=1" frameborder="0" allowfullscreen></iframe>';
-}
-
+// Run this function on page load
 window.onload = function() {
     loadImages();
-    cacheBustImages();
 };
+
 
     // Admin button functionality
     const adminButton = document.getElementById("admin-button");
