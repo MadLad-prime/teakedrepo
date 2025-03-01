@@ -62,7 +62,7 @@ function updateCloudinaryJSON(category, slot, imageUrl) {
       const jsonBlob = new Blob([JSON.stringify(data)], { type: "application/json" });
       const formData = new FormData();
       formData.append("file", jsonBlob);
-      formData.append("upload_preset", "ml_default");
+      formData.append("upload_preset", "isaac092");
       formData.append("public_id", "cloudinary_dddt1s.json");
       formData.append("invalidate", "true"); // 👈 Critical for CDN
 
@@ -87,7 +87,7 @@ function openUploadWidget() {
     const slot = document.getElementById("image-slot").value;
 
     const cloudName = "dujlwpbrv";  
-    const uploadPreset = "ml_default";  
+    const uploadPreset = "isaac092";  
 
     if (!window.cloudinary) {
         console.error("Cloudinary script not loaded!");
