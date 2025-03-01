@@ -46,25 +46,38 @@ function updateSlotOptions() {
     }
 }
 function updateCloudinaryJSON(category, slot, imageUrl) {
-    console.log(`Updating cloudinary.json with ${imageUrl}`);
+    console.log(`🔄 Attempting to update cloudinary.json with ${imageUrl}`);
 
-    const cloudinaryJsonURL = "https://res.cloudinary.com/dujlwpbrv/raw/upload/v1740847944/cloudinary_dddt1s.json";
+    const cloudinaryJsonURL = "https://res.cloudinary.com/dujlwpbrv/raw/upload/v1740847944/cloudinary_dddt1s.json"; // ✅ Make sure this matches your new file
 
-    fetch(cloudinaryJsonURL + `?timestamp=${new Date().getTime()}`) // Force fresh fetch
-        .then(response => response.json())
+    fetch(cloudinaryJsonURL + `?timestamp=${new Date().getTime()}`) // ✅ Force fresh fetch
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`❌ Failed to load JSON: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
+            console.log("✅ Current JSON Data Before Update:", data);
+
             if (!data[category]) {
-                console.warn(`Category ${category} does not exist in JSON. Creating it.`);
+                console.warn(`⚠️ Category ${category} does not exist in JSON. Creating it.`);
                 data[category] = {};
             }
-            data[category][slot] = imageUrl; // Update the JSON with the new image
 
+            // ✅ Update the correct image slot
+            data[category][slot] = imageUrl;
+
+            console.log("✅ Updated JSON Data:", data);
+
+            // Convert updated JSON to a Blob
             const jsonBlob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
 
+            // Create FormData for Cloudinary Upload
             const formData = new FormData();
             formData.append("file", jsonBlob, "cloudinary_dddt1s.json");
-            formData.append("upload_preset", "ml_default");
-            formData.append("public_id", "cloudinary_dddt1s");
+            formData.append("upload_preset", "ml_default"); // ✅ Ensure this matches Cloudinary settings
+            formData.append("public_id", "cloudinary_dddt1s.json"); // ✅ Ensure correct public_id
 
             return fetch("https://api.cloudinary.com/v1_1/dujlwpbrv/raw/upload", {
                 method: "POST",
@@ -75,6 +88,7 @@ function updateCloudinaryJSON(category, slot, imageUrl) {
         .then(data => console.log("✅ cloudinary.json successfully updated:", data))
         .catch(error => console.error("🚨 Error updating cloudinary.json:", error));
 }
+
 
 
 
