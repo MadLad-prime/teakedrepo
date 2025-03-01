@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function loadImages() {
     console.log("Fetching latest images from Cloudinary...");
 
-    const cloudinaryJsonURL = "https://res.cloudinary.com/dujlwpbrv/raw/upload/cloudinary_p9cutd.json";
+    const cloudinaryJsonURL = "https://res.cloudinary.com/dujlwpbrv/raw/upload/cloudinary_ddd1s.json";
 
     fetch(cloudinaryJsonURL + `?timestamp=${new Date().getTime()}`) // Force fresh fetch
         .then(response => {
