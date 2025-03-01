@@ -85,7 +85,7 @@ function openUploadWidget() {
     const slot = document.getElementById("image-slot").value;
 
     const cloudName = "dujlwpbrv";  
-    const uploadPreset = "isaac092";  
+    const uploadPreset = "ml_default";  
 
     if (!window.cloudinary) {
         console.error("Cloudinary script not loaded!");
