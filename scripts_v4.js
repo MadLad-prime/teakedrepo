@@ -70,41 +70,31 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     };
     function loadImages() {
-    console.log("🔄 Fetching latest images from Cloudinary...");
+    const jsonURL = "https://res.cloudinary.com/dujlwpbrv/raw/upload/cloudinary_dddt1s.json"; // No version ID
 
-    const cloudinaryJsonURL = "https://res.cloudinary.com/dujlwpbrv/raw/upload/v1740847944/cloudinary_dddt1s.json";
-
-    fetch(cloudinaryJsonURL + `?timestamp=${new Date().getTime()}`) // ✅ Force fresh fetch
+    fetch(jsonURL + `?ts=${new Date().getTime()}`) // Bypass cache
         .then(response => {
-            if (!response.ok) {
-                throw new Error(`❌ Failed to load JSON: ${response.status}`);
-            }
+            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
             return response.json();
         })
         .then(data => {
-            console.log("✅ Latest cloudinary.json fetched:", data);
+            // Fallback to empty data if structure is missing
+            const services = data.services || {};
+            const projects = data.projects || {};
 
-            ["services", "projects"].forEach(category => {
-                const slots = 3;
-                for (let i = 0; i < slots; i++) {
-                    if (!data[category] || !data[category][i]) {
-                        console.warn(`⚠️ No image found for ${category}-${i} in JSON`);
-                        continue;
-                    }
-
-                    const imageUrl = data[category][i];
-                    const imgElement = document.getElementById(`${category}-${i}`);
-
-                    if (imageUrl && imgElement) {
-                        console.log(`🖼️ Updating ${category}-${i} with ${imageUrl}`);
-                        imgElement.src = imageUrl + `?timestamp=${new Date().getTime()}`; // ✅ Prevent caching
-                    } else {
-                        console.warn(`⚠️ Missing image element for ${category}-${i}`);
-                    }
-                }
-            });
+            // Update DOM images
+            for (let i = 0; i < 3; i++) {
+                const serviceImg = document.getElementById(`services-${i}`);
+                const projectImg = document.getElementById(`projects-${i}`);
+                
+                if (serviceImg) serviceImg.src = services[i] || "fallback.jpg";
+                if (projectImg) projectImg.src = projects[i] || "fallback.jpg";
+            }
         })
-        .catch(error => console.error("🚨 Failed to load images:", error));
+        .catch(error => {
+            console.error("🚨 Image load failed:", error);
+            // Optional: Load from localStorage as fallback
+        });
 }
 
 window.onload = function() {
