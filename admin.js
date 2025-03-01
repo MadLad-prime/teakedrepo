@@ -46,43 +46,34 @@ function updateSlotOptions() {
     }
 }
 function updateCloudinaryJSON(category, slot, imageUrl) {
-    console.log(`🔄 Updating JSON for ${category}-${slot} with ${imageUrl}`);
+  console.log(`🔄 Updating JSON for ${category}-${slot}`);
 
-    const cloudinaryJsonURL = "https://res.cloudinary.com/dujlwpbrv/raw/upload/cloudinary_dddt1s.json"; // Remove version ID
+  // Remove version from image URL
+  const cleanImageUrl = imageUrl.replace(/\/upload\/.*?\//, '/upload/');
 
-    fetch(cloudinaryJsonURL + `?timestamp=${new Date().getTime()}`) // Cache busting
-        .then(response => {
-            if (!response.ok) throw new Error(`❌ JSON fetch failed: ${response.status}`);
-            return response.json();
-        })
-        .then(data => {
-            // Initialize category if missing
-            if (!data[category]) data[category] = {}; 
-            
-            // Update slot
-            data[category][slot] = imageUrl;
+  const cloudinaryJsonURL = "https://res.cloudinary.com/dujlwpbrv/raw/upload/cloudinary_dddt1s.json";
 
-            // Prepare updated JSON
-            const jsonBlob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
-            const formData = new FormData();
-            formData.append("file", jsonBlob);
-            formData.append("upload_preset", "ml_default");
-            formData.append("public_id", "cloudinary_dddt1s.json"); // Must include .json
+  fetch(cloudinaryJsonURL + `?ts=${Date.now()}`)
+    .then(response => response.json())
+    .then(data => {
+      if (!data[category]) data[category] = {};
+      data[category][slot] = cleanImageUrl; // Use cleaned URL
 
-            return fetch("https://api.cloudinary.com/v1_1/dujlwpbrv/raw/upload", {
-                method: "POST",
-                body: formData,
-            });
-        })
-        .then(response => response.json())
-        .then(result => {
-            console.log("✅ JSON Updated:", result);
-            alert("Image URL saved to Cloudinary!"); // Add user feedback
-        })
-        .catch(error => {
-            console.error("🚨 Update failed:", error);
-            alert("Failed to save changes. Check console.");
-        });
+      const jsonBlob = new Blob([JSON.stringify(data)], { type: "application/json" });
+      const formData = new FormData();
+      formData.append("file", jsonBlob);
+      formData.append("upload_preset", "ml_default");
+      formData.append("public_id", "cloudinary_dddt1s.json");
+      formData.append("invalidate", "true"); // 👈 Critical for CDN
+
+      return fetch("https://api.cloudinary.com/v1_1/dujlwpbrv/raw/upload", {
+        method: "POST",
+        body: formData
+      });
+    })
+    .then(response => response.json())
+    .then(result => console.log("✅ JSON Updated:", result))
+    .catch(error => console.error("🚨 Update failed:", error));
 }
 
 
