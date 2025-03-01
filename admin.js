@@ -48,23 +48,23 @@ function updateSlotOptions() {
 function updateCloudinaryJSON(category, slot, imageUrl) {
     console.log(`Updating cloudinary.json with ${imageUrl}`);
 
-    // Correct Cloudinary JSON URL
     const cloudinaryJsonURL = "https://res.cloudinary.com/dujlwpbrv/raw/upload/cloudinary_p9cutd.json";
 
-    fetch(cloudinaryJsonURL)
+    fetch(cloudinaryJsonURL + `?timestamp=${new Date().getTime()}`) // Force fresh fetch
         .then(response => response.json())
         .then(data => {
-            // ✅ Update JSON with the new image URL
-            data[category][slot] = imageUrl;
+            if (!data[category]) {
+                console.warn(`Category ${category} does not exist in JSON. Creating it.`);
+                data[category] = {};
+            }
+            data[category][slot] = imageUrl; // Update the JSON with the new image
 
-            // ✅ Convert updated JSON to a Blob
-            const jsonBlob = new Blob([JSON.stringify(data)], { type: "application/json" });
+            const jsonBlob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
 
-            // ✅ Create FormData for Cloudinary Upload
             const formData = new FormData();
-            formData.append("file", jsonBlob);
-            formData.append("upload_preset", "ml_default"); // Your Cloudinary upload preset
-            formData.append("public_id", "cloudinary_p9cutd"); // Keep same ID to overwrite
+            formData.append("file", jsonBlob, "cloudinary_p9cutd.json");
+            formData.append("upload_preset", "ml_default");
+            formData.append("public_id", "cloudinary_p9cutd");
 
             return fetch("https://api.cloudinary.com/v1_1/dujlwpbrv/raw/upload", {
                 method: "POST",
@@ -72,9 +72,10 @@ function updateCloudinaryJSON(category, slot, imageUrl) {
             });
         })
         .then(response => response.json())
-        .then(data => console.log("cloudinary.json successfully updated:", data))
-        .catch(error => console.error("Error updating cloudinary.json:", error));
+        .then(data => console.log("✅ cloudinary.json successfully updated:", data))
+        .catch(error => console.error("🚨 Error updating cloudinary.json:", error));
 }
+
 
 
 
