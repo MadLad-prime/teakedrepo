@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const cloudinaryJsonURL = "https://res.cloudinary.com/dujlwpbrv/raw/upload/cloudinary_p9cutd.json";
 
-    fetch(cloudinaryJsonURL + `?timestamp=${new Date().getTime()}`) // ✅ Force fresh fetch
+    fetch(cloudinaryJsonURL + `?timestamp=${new Date().getTime()}`) // Force fresh fetch
         .then(response => {
             if (!response.ok) {
                 throw new Error(`Failed to load JSON: ${response.status}`);
@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     if (imageUrl && imgElement) {
                         console.log(`🖼️ Updating ${category}-${i} with ${imageUrl}`);
-                        imgElement.src = imageUrl + `?timestamp=${new Date().getTime()}`; // ✅ Prevent caching
+                        imgElement.src = imageUrl + `?timestamp=${new Date().getTime()}`; // Prevent caching
                     } else {
                         console.warn(`⚠️ Missing image element for ${category}-${i}`);
                     }
@@ -110,6 +110,8 @@ document.addEventListener("DOMContentLoaded", function () {
 window.onload = function() {
     loadImages();
 };
+
+ 
 
 
 
