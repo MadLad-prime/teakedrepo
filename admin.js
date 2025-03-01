@@ -126,19 +126,37 @@ function openUploadWidget() {
 
 // 🔹 Function to Update `cloudinary.json` on a Remote Server
 function updateCloudinaryJSON(category, slot, imageUrl) {
-    fetch("https://res.cloudinary.com/dujlwpbrv/raw/upload/cloudinary_p9cutd.json")
+    console.log(`Updating cloudinary.json with ${imageUrl}`);
+
+    const cloudinaryJsonURL = "https://res.cloudinary.com/dujlwpbrv/raw/upload/cloudinary_p9cutd.json"; // ✅ Versionless URL
+
+    fetch(cloudinaryJsonURL)
         .then(response => response.json())
         .then(data => {
-            data[category][slot] = imageUrl;  // Update image slot
+            data[category][slot] = imageUrl;
+
+            const jsonBlob = new Blob([JSON.stringify(data)], { type: "application/json" });
+
+            const formData = new FormData();
+            formData.append("file", jsonBlob, "cloudinary_p9cutd.json"); // ✅ Ensure filename is set
+            formData.append("upload_preset", "ml_default"); // ✅ REPLACE with your actual upload preset
+            formData.append("public_id", "cloudinary_p9cutd"); // ✅ Ensure this matches your JSON file
+
             return fetch("https://api.cloudinary.com/v1_1/dujlwpbrv/raw/upload", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(data)
+                body: formData,
             });
         })
-        .then(() => console.log("Updated cloudinary.json with new image."))
-        .catch(error => console.error("Failed to update cloudinary.json:", error));
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Upload failed: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => console.log("✅ cloudinary.json successfully updated:", data))
+        .catch(error => console.error("🚨 Error updating cloudinary.json:", error));
 }
+
 
 
    
