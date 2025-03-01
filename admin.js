@@ -48,7 +48,7 @@ function updateSlotOptions() {
 function updateCloudinaryJSON(category, slot, imageUrl) {
     console.log(`Updating cloudinary.json with ${imageUrl}`);
 
-    const cloudinaryJsonURL = "https://res.cloudinary.com/dujlwpbrv/raw/upload/cloudinary_p9cutd.json";
+    const cloudinaryJsonURL = "https://res.cloudinary.com/dujlwpbrv/raw/upload/cloudinary_dddt1s.json";
 
     fetch(cloudinaryJsonURL + `?timestamp=${new Date().getTime()}`) // Force fresh fetch
         .then(response => response.json())
@@ -62,9 +62,9 @@ function updateCloudinaryJSON(category, slot, imageUrl) {
             const jsonBlob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
 
             const formData = new FormData();
-            formData.append("file", jsonBlob, "cloudinary_p9cutd.json");
+            formData.append("file", jsonBlob, "cloudinary_dddt1s.json");
             formData.append("upload_preset", "ml_default");
-            formData.append("public_id", "cloudinary_p9cutd");
+            formData.append("public_id", "cloudinary_dddt1s");
 
             return fetch("https://api.cloudinary.com/v1_1/dujlwpbrv/raw/upload", {
                 method: "POST",
@@ -129,7 +129,7 @@ function openUploadWidget() {
 function updateCloudinaryJSON(category, slot, imageUrl) {
     console.log(`Updating cloudinary.json with ${imageUrl}`);
 
-    const cloudinaryJsonURL = "https://res.cloudinary.com/dujlwpbrv/raw/upload/cloudinary_p9cutd.json"; // ✅ Versionless URL
+    const cloudinaryJsonURL = "https://res.cloudinary.com/dujlwpbrv/raw/upload/cloudinary_dddt1s.json"; // ✅ Versionless URL
 
     fetch(cloudinaryJsonURL)
         .then(response => response.json())
@@ -139,9 +139,9 @@ function updateCloudinaryJSON(category, slot, imageUrl) {
             const jsonBlob = new Blob([JSON.stringify(data)], { type: "application/json" });
 
             const formData = new FormData();
-            formData.append("file", jsonBlob, "cloudinary_p9cutd.json"); // ✅ Ensure filename is set
+            formData.append("file", jsonBlob, "cloudinary_dddt1s.json"); // ✅ Ensure filename is set
             formData.append("upload_preset", "ml_default"); // ✅ REPLACE with your actual upload preset
-            formData.append("public_id", "cloudinary_p9cutd"); // ✅ Ensure this matches your JSON file
+            formData.append("public_id", "cloudinary_dddt1s"); // ✅ Ensure this matches your JSON file
 
             return fetch("https://api.cloudinary.com/v1_1/dujlwpbrv/raw/upload", {
                 method: "POST",
