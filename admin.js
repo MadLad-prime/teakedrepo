@@ -48,7 +48,7 @@ function updateSlotOptions() {
 function updateCloudinaryJSON(category, slot, imageUrl) {
     console.log(`Updating cloudinary.json with ${imageUrl}`);
 
-    const cloudinaryJsonURL = "https://res.cloudinary.com/dujlwpbrv/raw/upload/cloudinary_dddt1s.json";
+    const cloudinaryJsonURL = "https://res.cloudinary.com/dujlwpbrv/raw/upload/v1740847944/cloudinary_dddt1s.json";
 
     fetch(cloudinaryJsonURL + `?timestamp=${new Date().getTime()}`) // Force fresh fetch
         .then(response => response.json())
@@ -129,7 +129,7 @@ function openUploadWidget() {
 function updateCloudinaryJSON(category, slot, imageUrl) {
     console.log(`Updating cloudinary.json with ${imageUrl}`);
 
-    const cloudinaryJsonURL = "https://res.cloudinary.com/dujlwpbrv/raw/upload/cloudinary_dddt1s.json"; // ✅ Versionless URL
+    const cloudinaryJsonURL = "https://res.cloudinary.com/dujlwpbrv/raw/upload/v1740847944/cloudinary_dddt1s.json"; 
 
     fetch(cloudinaryJsonURL)
         .then(response => response.json())
