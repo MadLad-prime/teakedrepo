@@ -124,6 +124,9 @@ function openUploadWidget() {
                 // Save to shared JSON file instead of localStorage
                 updateCloudinaryJSON(category, slot, imageUrl);
 
+                // Force refresh JSON after upload (Cloudinary CDN delay)
+                setTimeout(loadSavedImages, 2000); // Wait 2s for CDN propagation
+
                 alert("Image uploaded successfully!");
             } else if (error) {
                 console.error("Upload error:", error);
@@ -134,7 +137,6 @@ function openUploadWidget() {
 
     myWidget.open();
 }
-
 
 
 
