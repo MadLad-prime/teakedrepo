@@ -70,19 +70,19 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     };
     function loadImages() {
-    console.log("Fetching latest images from Cloudinary...");
+    console.log("🔄 Fetching latest images from Cloudinary...");
 
     const cloudinaryJsonURL = "https://res.cloudinary.com/dujlwpbrv/raw/upload/v1740847944/cloudinary_dddt1s.json";
 
-    fetch(cloudinaryJsonURL + `?timestamp=${new Date().getTime()}`) // Force fresh fetch
+    fetch(cloudinaryJsonURL + `?timestamp=${new Date().getTime()}`) // ✅ Force fresh fetch
         .then(response => {
             if (!response.ok) {
-                throw new Error(`Failed to load JSON: ${response.status}`);
+                throw new Error(`❌ Failed to load JSON: ${response.status}`);
             }
             return response.json();
         })
         .then(data => {
-            console.log("✅ Latest cloudinary.json fetched:", data); // Debugging
+            console.log("✅ Latest cloudinary.json fetched:", data);
 
             ["services", "projects"].forEach(category => {
                 const slots = 3;
@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     if (imageUrl && imgElement) {
                         console.log(`🖼️ Updating ${category}-${i} with ${imageUrl}`);
-                        imgElement.src = imageUrl + `?timestamp=${new Date().getTime()}`; // Prevent caching
+                        imgElement.src = imageUrl + `?timestamp=${new Date().getTime()}`; // ✅ Prevent caching
                     } else {
                         console.warn(`⚠️ Missing image element for ${category}-${i}`);
                     }
@@ -110,6 +110,8 @@ document.addEventListener("DOMContentLoaded", function () {
 window.onload = function() {
     loadImages();
 };
+
+    
 
  
 
