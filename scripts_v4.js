@@ -72,32 +72,45 @@ document.addEventListener("DOMContentLoaded", function () {
     function loadImages() {
     console.log("Fetching latest images from Cloudinary...");
 
- const cloudinaryJsonURL = "https://res.cloudinary.com/dujlwpbrv/raw/upload/cloudinary_p9cutd.json";
+    const cloudinaryJsonURL = "https://res.cloudinary.com/dujlwpbrv/raw/upload/cloudinary_p9cutd.json";
 
-    fetch(cloudinaryJsonURL)
-        .then(response => response.json())
+    fetch(cloudinaryJsonURL + `?timestamp=${new Date().getTime()}`) // ✅ Force fresh fetch
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Failed to load JSON: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
+            console.log("✅ Latest cloudinary.json fetched:", data); // Debugging
+
             ["services", "projects"].forEach(category => {
                 const slots = 3;
                 for (let i = 0; i < slots; i++) {
+                    if (!data[category] || !data[category][i]) {
+                        console.warn(`⚠️ No image found for ${category}-${i} in JSON`);
+                        continue;
+                    }
+
                     const imageUrl = data[category][i];
                     const imgElement = document.getElementById(`${category}-${i}`);
-                    
+
                     if (imageUrl && imgElement) {
-                        console.log(`Updating ${category}-${i} with ${imageUrl}`);
-                        imgElement.src = imageUrl + `?timestamp=${new Date().getTime()}`;
+                        console.log(`🖼️ Updating ${category}-${i} with ${imageUrl}`);
+                        imgElement.src = imageUrl + `?timestamp=${new Date().getTime()}`; // ✅ Prevent caching
                     } else {
-                        console.warn(`No image found for ${category}-${i}`);
+                        console.warn(`⚠️ Missing image element for ${category}-${i}`);
                     }
                 }
             });
         })
-        .catch(error => console.error("Failed to load images:", error));
+        .catch(error => console.error("🚨 Failed to load images:", error));
 }
 
 window.onload = function() {
     loadImages();
 };
+
 
 
 
